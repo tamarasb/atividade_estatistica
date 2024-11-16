@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 def moda(X,f):
     maior_f = 0;
     for x in f:
@@ -22,8 +24,8 @@ def media(X,f):
 def desvio(X,f):
     soma = 0
     for i in range(0, len(X)):
-        soma += pow(X[i]-media(X, f), 2)
-    S = (pow(soma, 1/2))/(somatorio(f)-1)
+        soma += f[i]*pow(X[i]-media(X, f), 2)
+    S = (pow(soma/(somatorio(f)-1), 1/2))
     return S
     
 def somatorio(f):
@@ -39,15 +41,16 @@ def somatorio_f(X,f):
     return soma
 
 def percentil(X,f,h,i):
-    Fi = somatorio(f)
-    pos = i*Fi/100
-    p = (pos-somatorio(X[0:classe(X,h,pos)-1])*h/Fi)
+    pos = i*somatorio(f)/100
+    cl = classe(f,h,pos)
+    l = X[cl]-h/2
+    p = l + (pos-somatorio(f[0:cl]))*h/f[cl]
     return p
  
-def classe(X, h, pos):    
+def classe(f, h, pos):    
     index = 0
-    for i in range(0,len(X)):
-        if(pos <= somatorio(X[0:i+1])):
+    for i in range(0,len(f)):
+        if(pos <= somatorio(f[0:i+1])):
             index = i
             break
     return index
@@ -70,10 +73,32 @@ def constroi_tabela(valores, c, h):
 def imprime_res(X,f,c,h):
     print("\nModa: "+str(moda(X,f)))
     print("Mediana: "+str(mediana(X,f,h)))
-    print("Media: "+str(media(X,f)))
-    print("Desvio padrão: "+str(desvio(X,f)))
+    print("x̄: "+str(media(X,f)))
+    print("S: "+str(desvio(X,f)))
+    print("Q1: "+str(percentil(X, f, h, 25)))
+    print("D3: "+str(percentil(X, f, h, 30)))
+    print("D7: "+str(percentil(X, f, h, 70)))
     print("P15: "+str(percentil(X, f, h, 15)))
     print("P90: "+str(percentil(X, f, h, 90)))
+    
+def imprime_graph(x,y,h):
+    tick_label = labels(x, h)
+    fig = plt.figure(figsize = (14, 8))
+    plt.bar(x, y, tick_label = tick_label, 
+            width = 3, color = ["orange"])
+    plt.xlabel("Xi",fontsize=15)
+    plt.ylabel("fi",fontsize=15)
+    plt.title("Gráfico de frequências", fontsize=20,
+              fontweight='bold')
+    plt.show()
+    
+def labels(X,h):
+    aux = []
+    for x in X:
+        l = x - h/2
+        L = x + h/2
+        aux.append(str(l)+" - "+str(L))
+    return aux
 
 #Questão1
 X1 = [350,450,550,650,750,850,950,1050,1150]
@@ -82,6 +107,7 @@ f1 = [14,46,58,76,68,62,48,22,6]
 c1 = 9 #Quantidade de classes
 h1 = 100 #Amplitude
 imprime_res(X1,f1,c1,h1)
+imprime_graph(X1,f1,h1)
 
 #Questão2
 V = [61,65,43,53,55,51,58,55,59,56,
@@ -97,3 +123,4 @@ h2 = 5
 X2,f2 = constroi_tabela(V, c2, h2)
 
 imprime_res(X2,f2,c2,h2)
+imprime_graph(X2,f2,h2)

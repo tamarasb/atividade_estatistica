@@ -81,11 +81,11 @@ def imprime_res(X,f,c,h):
     print("P15: "+str(percentil(X, f, h, 15)))
     print("P90: "+str(percentil(X, f, h, 90)))
     
-def imprime_graph(x,y,h):
+def imprime_graph(x,y,h,c):
     tick_label = labels(x, h)
     fig = plt.figure(figsize = (14, 8))
-    plt.bar(x, y, tick_label = tick_label, 
-            width = 3, color = ["orange"])
+    plt.bar(range(0,c), y, tick_label = tick_label, 
+            width = .8, color = ["orange"])
     plt.xlabel("Xi",fontsize=15)
     plt.ylabel("fi",fontsize=15)
     plt.title("Gráfico de frequências", fontsize=20,
@@ -107,7 +107,7 @@ f1 = [14,46,58,76,68,62,48,22,6]
 c1 = 9 #Quantidade de classes
 h1 = 100 #Amplitude
 imprime_res(X1,f1,c1,h1)
-imprime_graph(X1,f1,h1)
+imprime_graph(X1,f1,h1,c1)
 
 #Questão2
 V = [61,65,43,53,55,51,58,55,59,56,
@@ -123,4 +123,4 @@ h2 = 5
 X2,f2 = constroi_tabela(V, c2, h2)
 
 imprime_res(X2,f2,c2,h2)
-imprime_graph(X2,f2,h2)
+imprime_graph(X2,f2,h2,c2)
